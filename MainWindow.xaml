@@ -1,0 +1,167 @@
+﻿<Window x:Class="NET_Guardian.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:NET_Guardian"
+        mc:Ignorable="d"
+        Title="NET GUARDIAN"
+        Height="650" Width="480"
+        Background="#FFFFFF"
+        WindowStartupLocation="CenterScreen"
+        Loaded="Window_Loaded">
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Header bar -->
+        <Border Grid.Row="0" Background="#363636" Padding="15,10">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <!-- Left side: title and subtitle -->
+                <StackPanel Grid.Column="0" VerticalAlignment="Center">
+                    <TextBlock Text="NET GUARDIAN"
+                               FontSize="24" FontWeight="Bold"
+                               Foreground="#CCA43B"/>
+                    <TextBlock Text="Your trusted shield against cyber threats"
+                               FontSize="12" Foreground="#E5E5E5"
+                               FontStyle="Italic"/>
+                </StackPanel>
+
+                <!-- Right side: logo -->
+                <Image Grid.Column="1"
+                       Name="imgLogo"
+                       Source="logo.png"
+                       Width="75" Height="75"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Center"
+                       Stretch="Uniform"
+                       Margin="10,0,0,0"/>
+            </Grid>
+        </Border>
+
+        <!-- Chat display area -->
+        <Border Grid.Row="1" Margin="12,10,12,5"
+                Background="#FFFFFF" BorderBrush="#CCA43B" BorderThickness="1">
+            <ScrollViewer Name="chatScroller"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Padding="8">
+                <ItemsControl Name="lstChat"/>
+            </ScrollViewer>
+        </Border>
+
+        <!-- Input area -->
+        <Border Grid.Row="2" Margin="12,0,12,12" Background="#FFFFFF" Padding="10">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <!-- Message text box -->
+                <TextBox Name="txtInput"
+                         Grid.Row="0"
+                         Height="38"
+                         Padding="8,6"
+                         FontSize="13"
+                         Background="#FFFFFF"
+                         Foreground="#242F40"
+                         CaretBrush="#242F40"
+                         BorderBrush="#CCA43B"
+                         BorderThickness="1"
+                         VerticalContentAlignment="Center"
+                         Margin="0,0,0,8"
+                         KeyDown="TxtInput_KeyDown"/>
+
+                <!-- Send and Clear buttons side by side below the input -->
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Button Name="btnSend"
+                            Grid.Column="0"
+                            Content="Send"
+                            Height="38"
+                            Margin="0,0,6,0"
+                            Click="BtnSend_Click"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Foreground="#FFFFFF"
+                            Background="#CCA43B"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#b8922f"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#a07f28"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+
+                    <Button Name="btnClear"
+                            Grid.Column="1"
+                            Content="Clear Chat"
+                            Height="38"
+                            Margin="6,0,0,0"
+                            Click="BtnClear_Click"
+                            FontSize="13"
+                            FontWeight="SemiBold"
+                            Foreground="#FFFFFF"
+                            Background="#363636"
+                            BorderThickness="0"
+                            Cursor="Hand">
+                        <Button.Style>
+                            <Style TargetType="Button">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="Button">
+                                            <Border Background="{TemplateBinding Background}">
+                                                <ContentPresenter HorizontalAlignment="Center"
+                                                                  VerticalAlignment="Center"/>
+                                            </Border>
+                                            <ControlTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter Property="Background" Value="#242F40"/>
+                                                </Trigger>
+                                                <Trigger Property="IsPressed" Value="True">
+                                                    <Setter Property="Background" Value="#1a2030"/>
+                                                </Trigger>
+                                            </ControlTemplate.Triggers>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </Button.Style>
+                    </Button>
+                </Grid>
+            </Grid>
+        </Border>
+    </Grid>
+</Window>
