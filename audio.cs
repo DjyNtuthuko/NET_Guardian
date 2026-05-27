@@ -14,10 +14,10 @@ namespace NET_Guardian
             try
             {
                 // Write the embedded wav to a temp file so MediaPlayer can read it
-                string tempFile = Path.Combine(Path.GetTempPath(), "NetGuardianAudio.wav");
+                string tempFile = Path.Combine(Path.GetTempPath(), "NetGuardianAudioText.wav");
 
                 Stream resourceStream = Assembly.GetExecutingAssembly()
-                    .GetManifestResourceStream("NET_Guardian.NetGuardianAudio.wav");
+                    .GetManifestResourceStream("NET_Guardian.NetGuardianAudioText.wav");
                 if (resourceStream == null)
                 {
                     Console.WriteLine("Could not find the embedded audio file.");

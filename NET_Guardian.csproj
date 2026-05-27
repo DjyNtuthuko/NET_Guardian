@@ -10,12 +10,11 @@
 
   <ItemGroup>
     <None Remove="logo.png" />
-    <None Remove="NetGuardian Audio Text.wav" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="logo.png" />
-    <EmbeddedResource Include="NetGuardian Audio Text.wav" />
+    <EmbeddedResource Include="NetGuardianAudioText.wav" />
   </ItemGroup>
 
 </Project>
