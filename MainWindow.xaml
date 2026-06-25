@@ -3,22 +3,153 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:NET_Guardian"
         mc:Ignorable="d"
         Title="NET GUARDIAN"
-        Height="650" Width="480"
+        Height="720" Width="900"
+        MinHeight="650" MinWidth="760"
         Background="#FFFFFF"
         WindowStartupLocation="CenterScreen"
         Loaded="Window_Loaded">
+
+    <Window.Resources>
+
+        <Style x:Key="GoldButtonStyle" TargetType="Button">
+            <Setter Property="Foreground" Value="#FFFFFF"/>
+            <Setter Property="Background" Value="#CCA43B"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="FontSize" Value="13"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Cursor" Value="Hand"/>
+            <Setter Property="Height" Value="38"/>
+            <Setter Property="Padding" Value="12,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#b8922f"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#a07f28"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="DarkButtonStyle" TargetType="Button" BasedOn="{StaticResource GoldButtonStyle}">
+            <Setter Property="Background" Value="#363636"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}">
+                            <ContentPresenter HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter Property="Background" Value="#242F40"/>
+                            </Trigger>
+                            <Trigger Property="IsPressed" Value="True">
+                                <Setter Property="Background" Value="#1a2030"/>
+                            </Trigger>
+                            <Trigger Property="IsEnabled" Value="False">
+                                <Setter Property="Opacity" Value="0.55"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="TextBox">
+            <Setter Property="Foreground" Value="#242F40"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#CCA43B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="8,6"/>
+            <Setter Property="FontSize" Value="13"/>
+        </Style>
+
+        <Style TargetType="ComboBox">
+            <Setter Property="Foreground" Value="#242F40"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#CCA43B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Padding" Value="6,4"/>
+        </Style>
+
+        <Style TargetType="DatePicker">
+            <Setter Property="Foreground" Value="#242F40"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#CCA43B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+        </Style>
+
+        <Style x:Key="GuardianTabItemStyle" TargetType="TabItem">
+            <Setter Property="Width" Value="150"/>
+            <Setter Property="Height" Value="48"/>
+            <Setter Property="Margin" Value="0,0,0,8"/>
+            <Setter Property="Foreground" Value="#242F40"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="FontWeight" Value="SemiBold"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="TabItem">
+                        <Border x:Name="TabBorder"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="#CCA43B"
+                                BorderThickness="2">
+                            <ContentPresenter ContentSource="Header"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"/>
+                        </Border>
+
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsSelected" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#CCA43B"/>
+                                <Setter Property="Foreground" Value="#242F40"/>
+                            </Trigger>
+
+                            <Trigger Property="IsMouseOver" Value="True">
+                                <Setter TargetName="TabBorder" Property="Background" Value="#e6d19a"/>
+                                <Setter Property="Foreground" Value="#242F40"/>
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style TargetType="DataGrid">
+            <Setter Property="Foreground" Value="#242F40"/>
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#CCA43B"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="GridLinesVisibility" Value="Horizontal"/>
+            <Setter Property="HorizontalGridLinesBrush" Value="#E0E0E0"/>
+            <Setter Property="RowHeaderWidth" Value="0"/>
+            <Setter Property="CanUserAddRows" Value="False"/>
+            <Setter Property="IsReadOnly" Value="True"/>
+            <Setter Property="SelectionMode" Value="Single"/>
+        </Style>
+
+    </Window.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
-        <!-- Header bar -->
         <Border Grid.Row="0" Background="#363636" Padding="15,10">
             <Grid>
                 <Grid.ColumnDefinitions>
@@ -26,142 +157,352 @@
                     <ColumnDefinition Width="Auto"/>
                 </Grid.ColumnDefinitions>
 
-                <!-- Left side: title and subtitle -->
                 <StackPanel Grid.Column="0" VerticalAlignment="Center">
                     <TextBlock Text="NET GUARDIAN"
-                               FontSize="24" FontWeight="Bold"
+                               FontSize="24"
+                               FontWeight="Bold"
                                Foreground="#CCA43B"/>
                     <TextBlock Text="Your trusted shield against cyber threats"
-                               FontSize="12" Foreground="#E5E5E5"
+                               FontSize="12"
+                               Foreground="#E5E5E5"
                                FontStyle="Italic"/>
                 </StackPanel>
 
-                <!-- Right side: logo -->
                 <Image Grid.Column="1"
                        Name="imgLogo"
-                       Source="logo.png"
-                       Width="75" Height="75"
+                       Source="logo.jpeg"
+                       Width="75"
+                       Height="75"
                        HorizontalAlignment="Right"
                        VerticalAlignment="Center"
                        Stretch="Uniform"
+                       ImageFailed="ImgLogo_ImageFailed"
                        Margin="10,0,0,0"/>
             </Grid>
         </Border>
 
-        <!-- Chat display area -->
-        <Border Grid.Row="1" Margin="12,10,12,5"
-                Background="#FFFFFF" BorderBrush="#CCA43B" BorderThickness="1">
-            <ScrollViewer Name="chatScroller"
-                          VerticalScrollBarVisibility="Auto"
-                          HorizontalScrollBarVisibility="Disabled"
-                          Padding="8">
-                <ItemsControl Name="lstChat"/>
-            </ScrollViewer>
-        </Border>
+        <TabControl Name="mainTabs"
+                    Grid.Row="1"
+                    Margin="12,10,12,12"
+                    Background="#FFFFFF"
+                    BorderBrush="#CCA43B"
+                    BorderThickness="1"
+                    SelectionChanged="MainTabs_SelectionChanged"
+                    TabStripPlacement="Right"
+                    ItemContainerStyle="{StaticResource GuardianTabItemStyle}">
 
-        <!-- Input area -->
-        <Border Grid.Row="2" Margin="12,0,12,12" Background="#FFFFFF" Padding="10">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
+            <TabItem Name="tabChat" Header="Chat">
+                <Grid Background="#FFFFFF" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
 
-                <!-- Message text box -->
-                <TextBox Name="txtInput"
-                         Grid.Row="0"
-                         Height="38"
-                         Padding="8,6"
-                         FontSize="13"
-                         Background="#FFFFFF"
-                         Foreground="#242F40"
-                         CaretBrush="#242F40"
-                         BorderBrush="#CCA43B"
-                         BorderThickness="1"
-                         VerticalContentAlignment="Center"
-                         Margin="0,0,0,8"
-                         KeyDown="TxtInput_KeyDown"/>
+                    <Border Grid.Row="0"
+                            Margin="0,0,0,8"
+                            Background="#FFFFFF"
+                            BorderBrush="#CCA43B"
+                            BorderThickness="1">
+                        <ScrollViewer Name="chatScroller"
+                                      VerticalScrollBarVisibility="Auto"
+                                      HorizontalScrollBarVisibility="Disabled"
+                                      Padding="8">
+                            <ItemsControl Name="lstChat"/>
+                        </ScrollViewer>
+                    </Border>
 
-                <!-- Send and Clear buttons side by side below the input -->
-                <Grid Grid.Row="1">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*"/>
-                        <ColumnDefinition Width="*"/>
-                    </Grid.ColumnDefinitions>
+                    <Border Grid.Row="1" Background="#FFFFFF">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                    <Button Name="btnSend"
-                            Grid.Column="0"
-                            Content="Send"
-                            Height="38"
-                            Margin="0,0,6,0"
-                            Click="BtnSend_Click"
-                            FontSize="13"
-                            FontWeight="SemiBold"
-                            Foreground="#FFFFFF"
-                            Background="#CCA43B"
-                            BorderThickness="0"
-                            Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}">
-                                                <ContentPresenter HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#b8922f"/>
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter Property="Background" Value="#a07f28"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                            <TextBox Name="txtInput"
+                                     Grid.Row="0"
+                                     Height="38"
+                                     VerticalContentAlignment="Center"
+                                     Margin="0,0,0,8"
+                                     KeyDown="TxtInput_KeyDown"/>
 
-                    <Button Name="btnClear"
-                            Grid.Column="1"
-                            Content="Clear Chat"
-                            Height="38"
-                            Margin="6,0,0,0"
-                            Click="BtnClear_Click"
-                            FontSize="13"
-                            FontWeight="SemiBold"
-                            Foreground="#FFFFFF"
-                            Background="#363636"
-                            BorderThickness="0"
-                            Cursor="Hand">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate TargetType="Button">
-                                            <Border Background="{TemplateBinding Background}">
-                                                <ContentPresenter HorizontalAlignment="Center"
-                                                                  VerticalAlignment="Center"/>
-                                            </Border>
-                                            <ControlTemplate.Triggers>
-                                                <Trigger Property="IsMouseOver" Value="True">
-                                                    <Setter Property="Background" Value="#242F40"/>
-                                                </Trigger>
-                                                <Trigger Property="IsPressed" Value="True">
-                                                    <Setter Property="Background" Value="#1a2030"/>
-                                                </Trigger>
-                                            </ControlTemplate.Triggers>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </Button.Style>
-                    </Button>
+                            <Grid Grid.Row="1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <Button Name="btnSend"
+                                        Grid.Column="0"
+                                        Content="Send"
+                                        Margin="0,0,6,0"
+                                        Click="BtnSend_Click"
+                                        Style="{StaticResource GoldButtonStyle}"/>
+
+                                <Button Name="btnClear"
+                                        Grid.Column="1"
+                                        Content="Clear Chat"
+                                        Margin="6,0,0,0"
+                                        Click="BtnClear_Click"
+                                        Style="{StaticResource DarkButtonStyle}"/>
+                            </Grid>
+                        </Grid>
+                    </Border>
                 </Grid>
-            </Grid>
-        </Border>
+            </TabItem>
+
+            <TabItem Name="tabTasks" Header="Tasks">
+                <Grid Background="#FFFFFF" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0"
+                            BorderBrush="#CCA43B"
+                            BorderThickness="1"
+                            Padding="12">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="0"
+                                       Text="Task title"
+                                       Foreground="#242F40"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,8,4"/>
+
+                            <TextBlock Grid.Row="0" Grid.Column="1"
+                                       Text="Priority"
+                                       Foreground="#242F40"
+                                       FontWeight="SemiBold"
+                                       Margin="8,0,0,4"/>
+
+                            <TextBox Name="txtTaskTitle"
+                                     Grid.Row="1"
+                                     Grid.Column="0"
+                                     Height="36"
+                                     Margin="0,0,8,10"
+                                     VerticalContentAlignment="Center"/>
+
+                            <ComboBox Name="cmbPriority"
+                                      Grid.Row="1"
+                                      Grid.Column="1"
+                                      Height="36"
+                                      Margin="8,0,0,10"
+                                      SelectedIndex="1">
+                                <ComboBoxItem Content="Low"/>
+                                <ComboBoxItem Content="Medium"/>
+                                <ComboBoxItem Content="High"/>
+                            </ComboBox>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0"
+                                       Text="Description"
+                                       Foreground="#242F40"
+                                       FontWeight="SemiBold"
+                                       Margin="0,0,8,4"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="1"
+                                       Text="Reminder date (optional)"
+                                       Foreground="#242F40"
+                                       FontWeight="SemiBold"
+                                       Margin="8,0,0,4"/>
+
+                            <TextBox Name="txtTaskDescription"
+                                     Grid.Row="3"
+                                     Grid.Column="0"
+                                     Height="58"
+                                     Margin="0,0,8,0"
+                                     AcceptsReturn="True"
+                                     TextWrapping="Wrap"
+                                     VerticalScrollBarVisibility="Auto"/>
+
+                            <DatePicker Name="dpReminderDate"
+                                        Grid.Row="3"
+                                        Grid.Column="1"
+                                        Height="36"
+                                        Margin="8,0,0,0"
+                                        VerticalAlignment="Top"/>
+                        </Grid>
+                    </Border>
+
+                    <Grid Grid.Row="1" Margin="0,10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Grid.Column="0"
+                                Content="Add Task"
+                                Margin="0,0,5,0"
+                                Click="BtnAddTask_Click"
+                                Style="{StaticResource GoldButtonStyle}"/>
+
+                        <Button Grid.Column="1"
+                                Content="Complete Task"
+                                Margin="5,0"
+                                Click="BtnCompleteTask_Click"
+                                Style="{StaticResource GoldButtonStyle}"/>
+
+                        <Button Grid.Column="2"
+                                Content="Delete Task"
+                                Margin="5,0"
+                                Click="BtnDeleteTask_Click"
+                                Style="{StaticResource DarkButtonStyle}"/>
+
+                        <Button Grid.Column="3"
+                                Content="Refresh Tasks"
+                                Margin="5,0,0,0"
+                                Click="BtnRefreshTasks_Click"
+                                Style="{StaticResource DarkButtonStyle}"/>
+                    </Grid>
+
+                    <DataGrid Name="dgTasks"
+                              Grid.Row="2"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Title"
+                                                Binding="{Binding Title}"
+                                                Width="2*"/>
+                            <DataGridTextColumn Header="Priority"
+                                                Binding="{Binding Priority}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Reminder Date"
+                                                Binding="{Binding ReminderDate, StringFormat={}{0:yyyy-MM-dd}}"
+                                                Width="*"/>
+                            <DataGridCheckBoxColumn Header="Completed"
+                                                    Binding="{Binding IsCompleted}"
+                                                    Width="*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="tabQuiz" Header="Quiz">
+                <Grid Background="#FFFFFF" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <Border Grid.Row="0" Background="#363636" Padding="12">
+                        <Grid>
+                            <TextBlock Name="lblQuizCategory"
+                                       Foreground="#CCA43B"
+                                       FontSize="15"
+                                       FontWeight="Bold"/>
+
+                            <TextBlock Name="lblQuizProgress"
+                                       Foreground="#FFFFFF"
+                                       FontSize="13"
+                                       HorizontalAlignment="Right"/>
+                        </Grid>
+                    </Border>
+
+                    <TextBlock Name="txtQuizQuestion"
+                               Grid.Row="1"
+                               Foreground="#242F40"
+                               FontSize="18"
+                               FontWeight="SemiBold"
+                               TextWrapping="Wrap"
+                               Margin="4,20,4,14"/>
+
+                    <Separator Grid.Row="2"
+                               Background="#CCA43B"
+                               Height="1"/>
+
+                    <StackPanel Name="pnlQuizOptions"
+                                Grid.Row="3"
+                                Margin="8,12,8,8"/>
+
+                    <Border Grid.Row="4"
+                            BorderBrush="#CCA43B"
+                            BorderThickness="1"
+                            Background="#F0F0F0"
+                            Padding="10"
+                            Margin="0,8">
+                        <TextBlock Name="txtQuizFeedback"
+                                   Foreground="#242F40"
+                                   Text="Choose an answer, then select Next."
+                                   TextWrapping="Wrap"/>
+                    </Border>
+
+                    <Grid Grid.Row="5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Button Name="btnQuizNext"
+                                Grid.Column="0"
+                                Content="Next"
+                                Margin="0,0,6,0"
+                                Click="BtnQuizNext_Click"
+                                Style="{StaticResource GoldButtonStyle}"/>
+
+                        <Button Grid.Column="1"
+                                Content="Restart Quiz"
+                                Margin="6,0,0,0"
+                                Click="BtnRestartQuiz_Click"
+                                Style="{StaticResource DarkButtonStyle}"/>
+                    </Grid>
+                </Grid>
+            </TabItem>
+
+            <TabItem Name="tabActivity" Header="Activity Log">
+                <Grid Background="#FFFFFF" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0" Margin="0,0,0,10">
+                        <TextBlock Text="NET Guardian Activity"
+                                   Foreground="#242F40"
+                                   FontSize="18"
+                                   FontWeight="Bold"
+                                   VerticalAlignment="Center"/>
+
+                        <Button Content="Refresh Activity"
+                                HorizontalAlignment="Right"
+                                Width="150"
+                                Click="BtnRefreshActivity_Click"
+                                Style="{StaticResource GoldButtonStyle}"/>
+                    </Grid>
+
+                    <DataGrid Name="dgActivity"
+                              Grid.Row="1"
+                              AutoGenerateColumns="False">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Action"
+                                                Binding="{Binding Action}"
+                                                Width="*"/>
+                            <DataGridTextColumn Header="Details"
+                                                Binding="{Binding Details}"
+                                                Width="2.5*"/>
+                            <DataGridTextColumn Header="Created At"
+                                                Binding="{Binding CreatedAt, StringFormat={}{0:yyyy-MM-dd HH:mm}}"
+                                                Width="1.3*"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
+        </TabControl>
     </Grid>
 </Window>
