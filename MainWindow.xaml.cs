@@ -49,19 +49,14 @@ namespace NET_Guardian
                 CheckDueReminders();
             }
 
-            bool audioStarted = audioManager.PlayAudioGreeting(
-                ShowWelcomeMessage,
-                message => Dispatcher.Invoke(() =>
-                    MessageBox.Show(message, "Audio", MessageBoxButton.OK, MessageBoxImage.Information)));
-
-            if (audioStarted)
+            audioManager.PlayAudioGreeting(() =>
             {
-                TryLogActivity("Welcome audio played", "The welcome greeting was played.");
-            }
-            else
-            {
-                ShowWelcomeMessage();
-            }
+                Dispatcher.Invoke(() =>
+                {
+                    AddMessage("Hello! Welcome to NET Guardian Chatbot. What is your name?", isBot: true);
+                    chatManager.IsNameAsked = true;
+                });
+            });
         }
 
         private void InitialiseDatabase()
