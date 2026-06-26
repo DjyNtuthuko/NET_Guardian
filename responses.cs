@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
+#pragma warning disable CS8981 // Keeps the original Part 2 class name.
 namespace NET_Guardian
 {
     public class responses
     {
         // Delegate for generating bot responses
         public delegate string BotResponseDelegate(string userInput);
-
         // Tracks whether the bot has asked for the user's name
         public bool IsNameAsked { get; set; } = false;
 
@@ -24,6 +24,9 @@ namespace NET_Guardian
 
         // Stores the full conversation history
         public List<string> ChatHistory { get; private set; } = new List<string>();
+
+        // Lets the window respond to navigation commands
+        public string RequestedAction { get; private set; } = "";
 
         // Used to pick random responses from a topic list
         private Random rng = new Random();
@@ -46,7 +49,6 @@ namespace NET_Guardian
             LoadKeywords();
             botHandler = BuildResponse;
         }
-
         private void LoadTopics()
         {
             topicBank["password safety"] = new List<string>
@@ -142,7 +144,7 @@ namespace NET_Guardian
         }
 
         // Match user input to a known topic using the keyword map
-        private string MatchTopic(string input)
+        private string? MatchTopic(string input)
         {
             string lowered = input.ToLower();
 
@@ -193,7 +195,7 @@ namespace NET_Guardian
         }
 
         // Read the user's saved data from file if it exists
-        public void LoadUserMemory(string name)
+        public bool LoadUserMemory(string name)
         {
             try
             {
@@ -206,6 +208,7 @@ namespace NET_Guardian
                     {
                         UserName = parts[0];
                         FavouriteTopic = parts[1];
+                        return true;
                     }
                 }
             }
@@ -213,6 +216,8 @@ namespace NET_Guardian
             {
                 System.Diagnostics.Debug.WriteLine("Could not load user memory: " + ex.Message);
             }
+
+            return false;
         }
 
         // Calculate how different two strings are (used for typo detection)
@@ -243,9 +248,9 @@ namespace NET_Guardian
         }
 
         // Try to match a word to a topic even if it has a typo
-        private string MatchTopicWithTypoTolerance(string word)
+        private string? MatchTopicWithTypoTolerance(string word)
         {
-            string closestMatch = null;
+            string? closestMatch = null;
             int lowestDistance = 3;
 
             foreach (string key in keywordMap.Keys)
@@ -321,7 +326,7 @@ namespace NET_Guardian
         // Handle requests for a tip, either on a specific topic or a random one
         private string HandleTipRequest(string input)
         {
-            string matchedTopic = MatchTopic(input);
+            string? matchedTopic = MatchTopic(input);
 
             if (matchedTopic != null)
             {
@@ -358,19 +363,50 @@ namespace NET_Guardian
         public string BuildResponse(string userInput)
         {
             string lowered = userInput.ToLower();
+            RequestedAction = "";
 
             // Detect farewell words anywhere in the message
             if (ContainsFarewell(lowered))
                 return $"It was great chatting with you, {UserName}! Stay safe online and remember — good cyber habits go a long way. Come back anytime!";
 
+            // Open the task assistant for task and reminder commands
+            if (lowered.Contains("add a task") || lowered.Contains("create task") ||
+                lowered.Contains("make task") || lowered.Contains("set reminder") ||
+                lowered.Contains("remind me to"))
+            {
+                RequestedAction = "OpenTasks";
+                return "I have opened the Tasks tab. Add a title, choose a priority, and optionally select a reminder date.";
+            }
+
+            // Start the cybersecurity quiz
+            if (lowered.Contains("start quiz") || lowered.Contains("play quiz") ||
+                lowered.Contains("test my knowledge") || lowered.Contains("cybersecurity quiz"))
+            {
+                RequestedAction = "StartQuiz";
+                return "The cybersecurity quiz is ready in the Quiz tab. Choose an answer and select Next.";
+            }
+
+            // Show saved activity
+            if (lowered.Contains("activity log") || lowered.Contains("show activity") ||
+                lowered.Contains("what have you done for me"))
+            {
+                RequestedAction = "ShowActivity";
+                return "I have opened your Activity Log.";
+            }
+
             // Show chat history if requested
-            if (lowered == "history" || lowered == "show history")
+            if (lowered == "history" || lowered == "show history" ||
+                lowered == "chat history" || lowered == "show chat history")
+            {
+                RequestedAction = "ShowHistory";
                 return GetChatHistory();
+            }
 
             // Handle tip or advice requests
             if (lowered.Contains("give me a tip") || lowered.Contains("give me advice") ||
                 lowered.Contains("help me stay safe") || lowered == "tip" ||
-                lowered.Contains("another tip"))
+                lowered.Contains("another tip") || lowered.Contains("phishing tip") ||
+                lowered.Contains("password tip"))
             {
                 return HandleTipRequest(userInput);
             }
@@ -378,11 +414,12 @@ namespace NET_Guardian
             // Save favourite topic if user declares one
             if (lowered.Contains("interested in") || lowered.Contains("favourite topic is") || lowered.Contains("favorite topic is"))
             {
-                string matched = MatchTopic(userInput);
+                string? matched = MatchTopic(userInput);
                 if (matched != null)
                 {
                     FavouriteTopic = matched;
                     SaveUserMemory();
+                    RequestedAction = "FavouriteTopicSaved";
                     return $"Noted, {UserName}! I will remember that your favourite topic is {matched}. What would you like to know about it?";
                 }
             }
@@ -399,7 +436,7 @@ namespace NET_Guardian
             }
 
             // match to a topic using keywords
-            string topic = MatchTopic(userInput);
+            string? topic = MatchTopic(userInput);
 
             if (topic != null)
             {
@@ -419,7 +456,7 @@ namespace NET_Guardian
             {
                 if (word.Length > 3)
                 {
-                    string fuzzyMatch = MatchTopicWithTypoTolerance(word);
+                    string? fuzzyMatch = MatchTopicWithTypoTolerance(word);
                     if (fuzzyMatch != null)
                     {
                         LastTopic = fuzzyMatch;
