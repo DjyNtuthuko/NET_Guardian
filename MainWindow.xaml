@@ -170,7 +170,7 @@
 
                 <Image Grid.Column="1"
                        Name="imgLogo"
-                       Source="logo.jpeg"
+                       Source="logo.png"
                        Width="75"
                        Height="75"
                        HorizontalAlignment="Right"

@@ -16,7 +16,7 @@ namespace NET_Guardian
     public partial class MainWindow : Window
     {
         private readonly responses chatManager;
-        private readonly audio audioManager;
+        private readonly Audio audioManager;
         private readonly TaskManager taskManager;
         private readonly ActivityLogger activityLogger;
         private readonly QuizManager quizManager;
@@ -30,7 +30,7 @@ namespace NET_Guardian
         {
             InitializeComponent();
             chatManager = new responses();
-            audioManager = new audio();
+            audioManager = new Audio();
             taskManager = new TaskManager();
             activityLogger = new ActivityLogger();
             quizManager = new QuizManager();
